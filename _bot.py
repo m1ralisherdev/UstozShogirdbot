@@ -49,6 +49,6 @@ async def hudud_tanglash(message: Message, state: FSMContext):
     hudud_boshqarish = message.text
     print(hudud_boshqarish)
 
-
+#
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
