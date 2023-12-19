@@ -6,7 +6,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import ParseMode
 
-API_TOKEN = '6304492965:AAFe9wqA17pgLwtMZPW23DZImQtP3kWWCJc'
+API_TOKEN = '6580326658:AAFBYmlAhVhzAaevyKTW7D9a6YMYCiCMnlo'
 
 bot = Bot(token=API_TOKEN, parse_mode='HTML')
 dp = Dispatcher(bot, storage=MemoryStorage())
@@ -34,8 +34,11 @@ class HELPERS(StatesGroup):
 @dp.message_handler(commands='start')
 async def starter(message: Message, state: FSMContext):
     await message.answer(
-        f"Assalomu alaykum <b>{message.from_user.full_name}</b>\nZAM AGENCY kanalining rasmiy botiga xush kelibsiz!")
-    await message.answer("Ariza qoldirish uchun ismingizni kiriting")
+        f"""Assalomu alaykum <b>{message.from_user.full_name}</b> ㅤㅤㅤㅤㅤㅤㅤㅤ
+UstozShogird kanalining rasmiy botiga xush kelibsiz!
+
+/help yordam buyrugi orqali nimalarga qodir ekanligimni bilib oling!""")
+    await message.answer("<b>Ism, familiyangizni kiriting?</b>")
     await HELPERS.name_helper.set()
 
 
@@ -57,6 +60,13 @@ async def direction_taking(message: Message, state: FSMContext):
     a = yonlaish.replace(',', ' ')
     a = a.split()
     print(a)
+    print(a)
+    search = ''
+    for i in a:
+        search += f'#{i}  '
+        print(search)
+    malumotlar[message.from_user.id].append(search)
+
     await message.answer(
         "<b>🌐 Hudud:</b>\n\nQaysi hududdansiz?\nViloyat nomi, Toshkent shahar yoki Respublikani kiriting.")
     await state.finish()
@@ -113,24 +123,28 @@ async def job_taking(message: Message, state: FSMContext):
     await state.finish()
     await HELPERS.time.set()
 
+    @dp.message_handler(state=HELPERS.time)
+    async def time_taking(message: Message, state: FSMContext):
+        time_2 = message.text
+        malumotlar[message.from_user.id].append(time_2)
+        print(time_2)
+        print(malumotlar)
+        await message.answer(f"""
+    Ma'lumotlarga ko'ra:
 
-@dp.message_handler(state=HELPERS.time)
-async def time_taking(message: Message, state: FSMContext):
-    time_2 = message.text
-    malumotlar[message.from_user.id].append(time_2)
-    print(time_2)
-    await message.answer(f"""
-Ma'lumotlarga ko'ra:
-
-👨‍💼 Xodim: <b>{malumotlar[message.from_user.id][0]}</b>
-🕑 Yosh: <b>{malumotlar[message.from_user.id][3]}</b>
-📚 Texnologiya: <b>{malumotlar[message.from_user.id][1]}</b>
-🇺🇿 Telegram: <b>@{message.from_user.username}</b>
-📞 Aloqa: <b>{malumotlar[message.from_user.id][4]}</b>
-🌐 Hudud: <b>{malumotlar[message.from_user.id][2]}</b>
-💰 Narxi: <b>{malumotlar[message.from_user.id][5]}</b>
-👨🏻‍💻 Kasbi: <b>{malumotlar[message.from_user.id][6]}</b>
-🕰 Murojaat qilish vaqti: <b>{malumotlar[message.from_user.id][7]}</b>""")
+    👨‍💼 Xodim: <b>{malumotlar[message.from_user.id][0]}</b>
+    🕑 Yosh: <b>{malumotlar[message.from_user.id][4]}</b>
+    📚 Texnologiya: <b>{malumotlar[message.from_user.id][1]}</b>
+    🇺🇿 Telegram: <b>@{message.from_user.username}</b>
+    📞 Aloqa: <b>{malumotlar[message.from_user.id][5]}</b>
+    🌐 Hudud: <b>{malumotlar[message.from_user.id][3]}</b>
+    💰 Narxi: <b>{malumotlar[message.from_user.id][6]}</b>
+    👨🏻‍💻 Kasbi: <b>{malumotlar[message.from_user.id][7]}</b>
+    🕰 Murojaat qilish vaqti: <b>{malumotlar[message.from_user.id][8]}
+    
+    
+    {malumotlar[message.from_user.id][2]}
+    </b>""")
 
 
 if __name__ == '__main__':
