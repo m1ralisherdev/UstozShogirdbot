@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 
 malumotlar = {
 
-}
+}#
 
 
 class HELPERS(StatesGroup):
