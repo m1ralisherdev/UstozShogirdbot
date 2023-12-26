@@ -26,26 +26,48 @@ barcha_idlar_soni = sheet.max_row
 
 odamlar = []
 
+vaqtlar = []
+
+import datetime
+
+
+
 
 # ----------------------------------------DISPATCHER
 @dp.message_handler(commands='start')
 async def starter(message: Message):
+    x = datetime.datetime.now()
+    now = f"{x.strftime('%d')}/{x.strftime('%X')}"
     for i in range(1, barcha_idlar_soni + 1):
         id_telegram = sheet.cell(row=i, column=1).value
         if id_telegram:
             odamlar.append(int(id_telegram))
+    for i in range(1, barcha_idlar_soni + 1):
+        vaqt_qoshilgan = sheet.cell(row=i, column=2).value
+        if vaqt_qoshilgan:
+            vaqtlar.append(vaqt_qoshilgan)
+    if message.from_user.id not in odamlar:
+        print(True)
+
+        vaqtlar.append(now)
 
     if message.from_user.id not in odamlar:
         odamlar.append(message.from_user.id)
+        for i in range(1, len(odamlar) + 1):
+            print(vaqtlar)
+            ws[f'B{i}'] = vaqtlar[i - 1]
+        for i in range(1, len(odamlar) + 1):
+            print(odamlar)
+            ws[f'A{i}'] = odamlar[i - 1]
+
+        wb.save('database.xlsx')
+        print(True, 1)
         await message.answer("Assalomaleykum Bot ga xush kelibsiz!\n siz uchun bonuslarimiz mavjud")
 
     else:
         await message.answer(
             "Assalomaleykum Siz botdan oldin ro`yxatdan o`tib bo`lgansiz siz uchun bonuslar mavjud emas!")
 
-    for i in range(1, len(odamlar) + 1):
-        ws[f'A{i}'] = odamlar[i - 1]
-    wb.save('database.xlsx')
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
