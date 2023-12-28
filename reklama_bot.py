@@ -42,7 +42,7 @@ for i in range(1, barcha_idlar_soni + 1):
 async def starter(message: Message):
     x = datetime.datetime.now()
     now = f"{x.strftime('%d')}/{x.strftime('%X')}"
-
+#
     if message.from_user.id not in odamlar:
         odamlar.append(message.from_user.id)
         vaqtlar.append(now)
